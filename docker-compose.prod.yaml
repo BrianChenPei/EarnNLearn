@@ -1,0 +1,27 @@
+# docker-compose.yml
+version: "3.8"
+
+services:
+  web:
+    image: earnnlearn:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: earnnlearn
+    environment:
+      - PORT=3000
+      - API_KEY_FILE=/run/secrets/apiKey.json
+    ports:
+      - "3000:3000"
+    secrets:
+      - apiKey
+    volumes:
+      - type: bind
+        source: .
+        target: /app
+      - /app/node_modules
+
+secrets:
+  apiKey:
+    file: ./secret/apiKey.json
+  

@@ -1,0 +1,36 @@
+# docker-compose.yml
+version: "3.8"
+
+services:
+  web:
+    image: earnnlearn:latest
+    container_name: earnnlearn
+    ports:
+      - "3000:3000"
+    volumes:
+      - type: bind
+        source: .
+        target: /app
+      - /app/node_modules
+    depends_on:
+      - mongodb
+    networks:
+      - earnnlearn
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - db_data:/data/db
+    networks:
+      - earnnlearn
+    restart: always
+    
+volumes:
+  db_data: {}
+
+networks:
+  earnnlearn:
+    driver: bridge
+    
